@@ -12,8 +12,8 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import it.prova.pokeronline.model.Utente;
-import it.prova.pokeronline.repository.utente.UtenteRepository;
+import it.prova.triage.model.Utente;
+import it.prova.triage.repository.utente.UtenteRepository;
 
 @Service
 public class CustomUserDetailsService implements UserDetailsService {

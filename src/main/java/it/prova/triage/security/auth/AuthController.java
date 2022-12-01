@@ -12,8 +12,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import it.prova.pokeronline.security.JWTUtil;
-import it.prova.pokeronline.security.dto.UtenteAuthDTO;
+import it.prova.triage.security.JWTUtil;
+import it.prova.triage.security.dto.UtenteAuthDTO;
 
 @RestController
 @RequestMapping("/api/auth")

@@ -2,7 +2,6 @@ package it.prova.triage.service;
 
 import java.util.List;
 
-import it.prova.pokeronline.model.Tavolo;
 import it.prova.triage.model.Utente;
 
 public interface UtenteService {
