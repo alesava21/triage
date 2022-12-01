@@ -6,7 +6,7 @@ import java.util.stream.Collectors;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import it.prova.pokeronline.model.Ruolo;
+import it.prova.triage.model.Ruolo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
