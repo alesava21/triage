@@ -12,9 +12,9 @@ import javax.validation.constraints.Size;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import it.prova.pokeronline.model.Ruolo;
-import it.prova.pokeronline.model.StatoUtente;
-import it.prova.pokeronline.model.Utente;
+import it.prova.triage.model.Ruolo;
+import it.prova.triage.model.StatoUtente;
+import it.prova.triage.model.Utente;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -39,24 +39,33 @@ public class UtenteDTO {
 	@Size(min = 8, max = 15, message = "Il valore inserito deve essere lungo tra {min} e {max} caratteri")
 	private String password;
 
+	private String confermaPassword;
+
 	@NotBlank(message = "{nome.notblank}")
 	private String nome;
 
 	@NotBlank(message = "{cognome.notblank}")
 	private String cognome;
-	private Date dateCreated;
+
+	@NotBlank(message = "{email.notblank}")
+	private String email;
+
+	private LocalDate dateRegistrazione;
+
 	private StatoUtente stato;
+
 	private Long[] ruoliIds;
-	private LocalDate dataRegistrazione;
-	@Positive
-	private Integer esperienzaAccumulata;
-	@Positive
-	private Integer creditoAccumulato;
 
 	public Utente buildUtenteModel(boolean includeIdRoles) {
-		Utente result = Utente.builder().id(id).username(username).password(password).nome(nome).cognome(cognome)
-				.dateCreated(dateCreated).dataRegistrazione(dataRegistrazione)
-				.esperienzaAccumulata(esperienzaAccumulata).creditoAccumulato(creditoAccumulato).stato(stato).build();
+		Utente result = Utente.builder()
+				.id(id)
+				.username(username)
+				.password(password)
+				.nome(nome)
+				.cognome(cognome)
+				.dataRegistrazione(dateRegistrazione)
+				.stato(stato)
+				.build();
 		if (includeIdRoles && ruoliIds != null)
 			result.ruoli(Arrays.asList(ruoliIds).stream().map(id -> Ruolo.builder().id(id).build())
 					.collect(Collectors.toList()));
@@ -65,11 +74,14 @@ public class UtenteDTO {
 	}
 
 	public static UtenteDTO buildUtenteDTOFromModel(Utente utenteModel) {
-		UtenteDTO result = UtenteDTO.builder().id(utenteModel.id()).username(utenteModel.username())
-				.nome(utenteModel.nome()).cognome(utenteModel.cognome())
-				.dataRegistrazione(utenteModel.dataRegistrazione())
-				.esperienzaAccumulata(utenteModel.esperienzaAccumulata())
-				.creditoAccumulato(utenteModel.creditoAccumulato()).stato(utenteModel.stato()).build();
+		UtenteDTO result = UtenteDTO.builder()
+				.id(utenteModel.id())
+				.username(utenteModel.username())
+				.nome(utenteModel.nome())
+				.cognome(utenteModel.cognome())
+				.dateRegistrazione(utenteModel.dataRegistrazione())
+				.stato(utenteModel.stato())
+				.build();
 		if (!utenteModel.ruoli().isEmpty())
 			result.ruoliIds = utenteModel.ruoli().stream().map(r -> r.id()).collect(Collectors.toList())
 					.toArray(new Long[] {});
