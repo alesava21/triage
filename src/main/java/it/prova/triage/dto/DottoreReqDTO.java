@@ -18,8 +18,6 @@ public class DottoreReqDTO {
 
 	private String nome;
 	private String cognome;
-	private String codiceDottore;
-	private boolean inVisita;
-	private boolean inServizio;
+	private String codiceFiscale;
 
 }

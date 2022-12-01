@@ -15,9 +15,10 @@ import lombok.Setter;
 @AllArgsConstructor
 @JsonInclude(JsonInclude.Include.NON_NULL)
 public class DottoreRespDTO {
-	
+
 	private String nome;
 	private String cognome;
-	private String codiceFiscale;
-
+	private String codiceDottore;
+	private boolean inVisita;
+	private boolean inServizio;
 }
