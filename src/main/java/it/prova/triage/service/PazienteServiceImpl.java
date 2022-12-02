@@ -15,8 +15,8 @@ import it.prova.triage.web.api.exception.PazienteNotFounfException;
 
 @Service
 @Transactional(readOnly = true)
-public class PazienteServiceImpl implements PazienteSerivice{
-	
+public class PazienteServiceImpl implements PazienteSerivice {
+
 	@Autowired
 	PazienteRepository pazienteRepository;
 
@@ -33,7 +33,7 @@ public class PazienteServiceImpl implements PazienteSerivice{
 	@Override
 	public void aggiorna(Paziente pazienteInstance) {
 		pazienteRepository.save(pazienteInstance);
-		
+
 	}
 
 	@Override
@@ -41,47 +41,57 @@ public class PazienteServiceImpl implements PazienteSerivice{
 		pazienteInstance.dataRegistrazione(LocalDate.now());
 		pazienteInstance.stato(StatoPaziente.INT_ATTESA_VISITA);
 		pazienteRepository.save(pazienteInstance);
-		
+
 	}
 
 	@Override
 	public void rimuovi(Long idToRemove) {
 		pazienteRepository.deleteById(idToRemove);
-		
+
 	}
 
 	@Override
 	public void ricovera(long id) {
-Paziente result = pazienteRepository.findById(id).orElse(null);
-		
-		if(result == null)
+		Paziente result = pazienteRepository.findById(id).orElse(null);
+
+		if (result == null)
 			throw new PazienteNotFounfException("Non e stato possibile trovare un Paziente");
-		
-		if(!result.stato().equals(StatoPaziente.IN_VISITA))
+
+		if (!result.stato().equals(StatoPaziente.IN_VISITA))
 			throw new PazienteNonInVisitaException("Non e possibile ricoverare un paziente che non e in visita");
-		
+
 		result.stato(StatoPaziente.RICOVERATO);
 		result.codiceDottore(null);
-		
+
 		pazienteRepository.save(result);
 	}
 
 	@Override
 	public void impostaCodiceDottore(String codiceFiscale, String codiceDottore) {
-Paziente result = pazienteRepository.FindBycodiceFiscale(codiceFiscale).orElse(null);
-		
-		if(result == null)
+		Paziente result = pazienteRepository.FindBycodiceFiscale(codiceFiscale).orElse(null);
+
+		if (result == null)
 			throw new PazienteNotFounfException("paziente non trovato");
-		
+
 		result.codiceDottore(codiceDottore);
 		pazienteRepository.save(result);
-		
+
 	}
 
 	@Override
 	public void dimetti(Long id) {
-		// TODO Auto-generated method stub
-		
+		Paziente result = pazienteRepository.findById(id).orElse(null);
+
+		if (result == null)
+			throw new PazienteNotFounfException("Non e stato possibile trovare un Paziente");
+
+		if (!result.stato().equals(StatoPaziente.IN_VISITA))
+			throw new PazienteNonInVisitaException("Non e possibile ricoverare un paziente che non e in visita");
+
+		result.stato(StatoPaziente.DIMESSO);
+		result.codiceDottore(null);
+
+		pazienteRepository.save(result);
 	}
 
 }
