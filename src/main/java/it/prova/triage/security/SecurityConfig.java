@@ -38,31 +38,28 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http.csrf().disable() // Disabling csrf
-		.httpBasic().disable() // Disabling http basic
-		.cors() // Enabling cors
-		.and()
-			
-		.authorizeHttpRequests() 
-		.antMatchers("/api/auth/login").permitAll()
-		.antMatchers("/api/paziente/**").permitAll()//messa a permitAll per fare test piu veloci sul CRUD
-		.antMatchers("/api/utente/userInfo").authenticated()
-		.antMatchers("/api/utente/**").hasRole("ADMIN")
-		.antMatchers("/**").hasAnyRole("ADMIN", "SUB_OPERATOR")
-		// .antMatchers("/anonymous*").anonymous()
-		.anyRequest().authenticated()
-		.and()
-		
-		// imposto il mio custom user details service
-		.userDetailsService(customUserDetailsService) 
-		// quando qualcosa fallisce ho il mio handler che customizza la response
-		.exceptionHandling().authenticationEntryPoint(unauthorizedHandler)
-		.and()
-		
-		// non abbiamo bisogno di una sessione: meglio forzare a stateless
-		.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS); 
+				.httpBasic().disable() // Disabling http basic
+				.cors() // Enabling cors
+				.and()
+
+				.authorizeHttpRequests().antMatchers("/api/auth/login").permitAll()
+				.antMatchers("/api/assegnapaziente/**").hasAnyRole("ADMIN", "SUB_OPERATOR")
+				.antMatchers("/api/paziente/**").hasAnyRole("ADMIN", "SUB_OPERATOR").antMatchers("/api/utente/userInfo")
+				.authenticated().antMatchers("/api/utente/**").hasRole("ADMIN").antMatchers("/**")
+				.hasAnyRole("ADMIN", "SUB_OPERATOR")
+				// .antMatchers("/anonymous*").anonymous()
+				.anyRequest().authenticated().and()
+
+				// imposto il mio custom user details service
+				.userDetailsService(customUserDetailsService)
+				// quando qualcosa fallisce ho il mio handler che customizza la response
+				.exceptionHandling().authenticationEntryPoint(unauthorizedHandler).and()
+
+				// non abbiamo bisogno di una sessione: meglio forzare a stateless
+				.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
 // Adding the JWT filter
-http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
-}
+		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+	}
 
 }

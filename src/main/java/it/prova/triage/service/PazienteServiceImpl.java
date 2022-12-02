@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import it.prova.triage.model.Paziente;
 import it.prova.triage.model.StatoPaziente;
 import it.prova.triage.repository.paziente.PazienteRepository;
+import it.prova.triage.web.api.exception.PazienteNonInVisitaException;
+import it.prova.triage.web.api.exception.PazienteNotFounfException;
 
 @Service
 @Transactional(readOnly = true)
@@ -45,6 +47,34 @@ public class PazienteServiceImpl implements PazienteSerivice{
 	@Override
 	public void rimuovi(Long idToRemove) {
 		pazienteRepository.deleteById(idToRemove);
+		
+	}
+
+	@Override
+	public void ricovera(long id) {
+Paziente result = pazienteRepository.findById(id).orElse(null);
+		
+		if(result == null)
+			throw new PazienteNotFounfException("Non e stato possibile trovare un Paziente");
+		
+		if(!result.stato().equals(StatoPaziente.IN_VISITA))
+			throw new PazienteNonInVisitaException("Non e possibile ricoverare un paziente che non e in visita");
+		
+		result.stato(StatoPaziente.RICOVERATO);
+		result.codiceDottore(null);
+		
+		pazienteRepository.save(result);
+	}
+
+	@Override
+	public void impostaCodiceDottore(String codiceFiscale, String codiceDottore) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void dimetti(Long id) {
+		// TODO Auto-generated method stub
 		
 	}
 
