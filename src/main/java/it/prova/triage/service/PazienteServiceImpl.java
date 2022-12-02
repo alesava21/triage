@@ -68,7 +68,13 @@ Paziente result = pazienteRepository.findById(id).orElse(null);
 
 	@Override
 	public void impostaCodiceDottore(String codiceFiscale, String codiceDottore) {
-		// TODO Auto-generated method stub
+Paziente result = pazienteRepository.FindBycodiceFiscale(codiceFiscale).orElse(null);
+		
+		if(result == null)
+			throw new PazienteNotFounfException("paziente non trovato");
+		
+		result.codiceDottore(codiceDottore);
+		pazienteRepository.save(result);
 		
 	}
 
