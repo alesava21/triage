@@ -32,12 +32,12 @@ public class AssegnaPazienteController {
 	@GetMapping("/{cd}")
 	public DottorePazienteRespDTO verificaDisponibilitaDottore(@PathVariable(required = true) String cd) {
 
-		LOGGER.info(".........invocazione servizio esterno............");
+		LOGGER.info("invoco il servizio esterno");
 
 		DottorePazienteRespDTO dottoreResponseDTO = webClient.get().uri("/verificaDisponibilitaDottore/" + cd)
 				.retrieve().bodyToMono(DottorePazienteRespDTO.class).block();
 
-		LOGGER.info(".........invocazione servizio esterno completata............");
+		LOGGER.info("invoco il servizio esterno COMPLETATA");
 
 		return dottoreResponseDTO;
 	}
@@ -48,7 +48,7 @@ public class AssegnaPazienteController {
 		pazienteService.impostaCodiceDottore(dottore.getCodFiscalePazienteAttualmenteInVisita(),
 				dottore.getCodiceDottore());
 
-		LOGGER.info(".........invocazione servizio esterno............");
+		LOGGER.info("invoco il servizio esterno");
 
 		ResponseEntity<DottorePazienteRespDTO> response = webClient
 				.post().uri("/impostaVisita").body(
@@ -59,7 +59,7 @@ public class AssegnaPazienteController {
 						DottorePazienteRespDTO.class)
 				.retrieve().toEntity(DottorePazienteRespDTO.class).block();
 
-		LOGGER.info(".........invocazione servizio esterno completata............");
+		LOGGER.info("invoco il servizio esterno COMPLETATA");
 
 		return DottorePazienteRespDTO.builder().codiceDottore(response.getBody().getCodiceDottore())
 				.codFiscalePazienteAttualmenteInVisita(response.getBody().getCodFiscalePazienteAttualmenteInVisita())
