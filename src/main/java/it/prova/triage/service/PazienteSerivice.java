@@ -12,7 +12,7 @@ public interface PazienteSerivice {
 
 	public void aggiorna(Paziente pazienteInstance);
 
-	public void inserisciNuovo(Paziente pazienteInstance);
+	public Paziente inserisciNuovo(Paziente pazienteInstance);
 
 	public void rimuovi(Long idToRemove);
 	

@@ -26,22 +26,20 @@ public class PazienteDTO {
 	private String nome;
 	private String cognome;
 	private String codiceFiscale;
+	private String codiceDottore;
 	private LocalDate dataRegistrazione;
 	private StatoPaziente stato;
-	
+
 	public Paziente buildPazienteModel() {
-		Paziente result = Paziente.builder()
-				.id(id)
-				.nome(cognome)
-				.cognome(cognome)
-				.codiceFiscale(codiceFiscale)
-				.dataRegistrazione(dataRegistrazione)
-				.stato(stato)
-				.build();
-		
+		Paziente result = Paziente.builder().id(id).nome(nome).cognome(cognome).codiceFiscale(codiceFiscale)
+				.dataRegistrazione(dataRegistrazione).stato(stato).build();
+
+		if (codiceDottore != null)
+			result.codiceDottore(codiceDottore);
+
 		return result;
 	}
-	
+
 	public static PazienteDTO buildPazienteDTOFromModel(Paziente pazienteModel) {
 		PazienteDTO result = PazienteDTO.builder()
 				.id(pazienteModel.id())
@@ -52,16 +50,19 @@ public class PazienteDTO {
 				.stato(pazienteModel.stato())
 				.build();
 		
+		if(pazienteModel.codiceDottore() != null)
+			result.setCodiceDottore(pazienteModel.codiceDottore());
+		
 		return result;
 	}
-	
-	public static List<PazienteDTO> createListDTOFromModel(List<Paziente> listaPazienteModel){
+
+	public static List<PazienteDTO> createListDTOFromModel(List<Paziente> listaPazienteModel) {
 		return listaPazienteModel.stream().map(paziente -> {
 			return PazienteDTO.buildPazienteDTOFromModel(paziente);
 		}).collect(Collectors.toList());
 	}
-	
-	public static List<Paziente> createModelListFromDTO(List<PazienteDTO> listaPazienteDTO){
+
+	public static List<Paziente> createModelListFromDTO(List<PazienteDTO> listaPazienteDTO) {
 		return listaPazienteDTO.stream().map(paziente -> {
 			return paziente.buildPazienteModel();
 		}).collect(Collectors.toList());
